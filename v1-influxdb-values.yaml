@@ -1,0 +1,26 @@
+image:
+  repository: influxdb
+  tag: latest
+  pullPolicy: IfNotPresent
+
+env:
+  INFLUXDB_DB: influxdb
+  INFLUXDB_HTTP_AUTH_ENABLED: "true"
+  INFLUXDB_ADMIN_USER: admin
+  INFLUXDB_ADMIN_PASSWORD: admin123
+
+persistence:
+  enabled: true
+  storageClass: ""
+  accessModes:
+    - ReadWriteOnce
+  size: 1Gi
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 1Gi
+  requests:
+    cpu: 250m
+    memory: 512Mi
+

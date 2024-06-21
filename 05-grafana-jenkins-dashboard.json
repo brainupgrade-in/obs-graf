@@ -1,0 +1,180 @@
+{
+    "annotations": {
+      "list": []
+    },
+    "editable": true,
+    "gnetId": null,
+    "graphTooltip": 0,
+    "id": null,
+    "links": [],
+    "panels": [
+      {
+        "datasource": {
+            "type": "influxdb",
+            "uid": "bdn8ec4kip0cgf"
+          },
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 12,
+          "x": 0,
+          "y": 0
+        },
+        "id": 1,
+        "options": {
+          "showHeader": true
+        },
+        "targets": [
+          {
+            "query": "from(bucket: \"Jenkins\") |> range(start: -1h) |> filter(fn: (r) => r._measurement == \"jenkins_data\" and r._field == \"build_time\") |> mean()",
+            "refId": "A"
+          }
+        ],
+        "title": "Average Build Time",
+        "type": "gauge"
+      },
+      {
+        "datasource": "InfluxDB",
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 12,
+          "x": 12,
+          "y": 0
+        },
+        "id": 2,
+        "options": {
+          "showHeader": true
+        },
+        "targets": [
+          {
+            "query": "from(bucket: \"Jenkins\") |> range(start: -1h) |> filter(fn: (r) => r._measurement == \"jenkins_data\" and r._field == \"build_result\") |> count()",
+            "refId": "A"
+          }
+        ],
+        "title": "Build Success Count",
+        "type": "stat"
+      },
+      {
+        "datasource": "InfluxDB",
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 12,
+          "x": 0,
+          "y": 9
+        },
+        "id": 3,
+        "options": {
+          "showHeader": true
+        },
+        "targets": [
+          {
+            "query": "from(bucket: \"Jenkins\") |> range(start: -1h) |> filter(fn: (r) => r._measurement == \"jenkins_data\" and r._field == \"queue_time\") |> mean()",
+            "refId": "A"
+          }
+        ],
+        "title": "Average Queue Time",
+        "type": "gauge"
+      },
+      {
+        "datasource": "InfluxDB",
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 12,
+          "x": 12,
+          "y": 9
+        },
+        "id": 4,
+        "options": {
+          "showHeader": true
+        },
+        "targets": [
+          {
+            "query": "from(bucket: \"Jenkins\") |> range(start: -1h) |> filter(fn: (r) => r._measurement == \"jenkins_data\" and r._field == \"executor_utilization\") |> mean()",
+            "refId": "A"
+          }
+        ],
+        "title": "Executor Utilization",
+        "type": "gauge"
+      },
+      {
+        "datasource": "InfluxDB",
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 24,
+          "x": 0,
+          "y": 18
+        },
+        "id": 5,
+        "options": {
+          "showHeader": true
+        },
+        "targets": [
+          {
+            "query": "from(bucket: \"Jenkins\") |> range(start: -1h) |> filter(fn: (r) => r._measurement == \"jenkins_data\" and r._field == \"total_duration\") |> mean()",
+            "refId": "A"
+          }
+        ],
+        "title": "Total Build Duration",
+        "type": "graph"
+      },
+      {
+        "datasource": "InfluxDB",
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 24,
+          "x": 0,
+          "y": 27
+        },
+        "id": 6,
+        "options": {
+          "showHeader": true
+        },
+        "targets": [
+          {
+            "query": "from(bucket: \"Jenkins\") |> range(start: -1h) |> filter(fn: (r) => r._measurement == \"jenkins_data\" and r._field == \"build_successful\") |> count()",
+            "refId": "A"
+          }
+        ],
+        "title": "Successful Builds",
+        "type": "graph"
+      }
+    ],
+    "schemaVersion": 27,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+      "list": []
+    },
+    "time": {
+      "from": "now-1h",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "",
+    "title": "Jenkins Metrics",
+    "version": 1
+  }
+  
