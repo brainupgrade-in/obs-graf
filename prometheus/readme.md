@@ -19,13 +19,15 @@ Password: kubectl get secret --namespace rajesh grafana -o jsonpath="{.data.admi
 - Kubernetes Cluster 
 Api Server https://grafana.com/grafana/dashboards/12006-kubernetes-apiserver/
 Node Exporter 11074
-- Microservices Apps
+- Spring boot - Microservices Apps (prometheus-springboot, weather) 4701 12685 20729 6756
 - Kafka
 - JMS
 
-## Springboot
+## Springboot - simple
 kubectl create deploy prometheus-springboot --image brainupgrade/prometheus-springboot:simple
 kubectl expose deploy prometheus-springboot --port 80 --target-port 8080
+
+## Springboot - weather
 
 ## Nginx Ingress Controller
 

@@ -1,0 +1,218 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  spring.datasource.url: "jdbc:mariadb://weather-db:3306/weather"
+  weatherServiceURL: "http://weather-services"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: app-secret
+data:
+  spring.datasource.password: d2VhdGhlcg==
+  spring.datasource.username: d2VhdGhlcg==
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: weather-db
+spec:
+  type: ClusterIP
+  ports:
+    - name: mariadb
+      port: 3306
+      targetPort: 3306
+  selector:
+    app: weather-db
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: weather-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: weather-db
+  template:
+    metadata:
+      labels:
+        app: weather-db
+    spec:
+      containers:
+      - image: mariadb:10.3
+        name: mariadb
+        resources: 
+          limits:
+            cpu: 50m
+            memory: 128Mi
+          requests:
+            cpu: 50m
+            memory: 128Mi         
+        ports:
+        - containerPort: 3306
+          name: mariadb
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: app-secret
+                key: spring.datasource.password
+          - name: MYSQL_DATABASE
+            value: weather
+          - name: MYSQL_USER
+            valueFrom:
+              secretKeyRef:
+                name: app-secret
+                key: spring.datasource.username
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: app-secret
+                key: spring.datasource.password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: weather-services
+spec:
+  type: ClusterIP
+  ports:
+    - name: services
+      port: 80
+      targetPort: 8080
+    - name: prometheus
+      port: 8888
+      targetPort: 8888
+  selector:
+    app: weather
+    tier: services
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: weather-services
+  name: weather-services
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: weather
+      tier: services
+  template:
+    metadata:
+      labels:
+        app: weather
+        tier: services
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8888"
+        prometheus.io/path: /actuator/prometheus        
+    spec:
+      containers:
+        - image: brainupgrade/weather-services:openmeteo-v3
+          imagePullPolicy: Always
+          name: weather-services
+          env:
+            - name: MY_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace          
+            - name: spring.application.name
+              value: "$(MY_NAMESPACE)-weather-services"
+            - name: server.port
+              value: "8080"
+            - name: management.endpoints.web.exposure.include
+              value: "*"
+            - name: management.server.port
+              value: "8888"
+            - name: management.metrics.web.server.request.autotime.enabled
+              value: "true"
+            - name: management.metrics.tags.application
+              value: "$(MY_NAMESPACE)-weather-services"     
+          ports:
+            - containerPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: weather
+  name: weather-front
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: weather
+      tier: front
+  template:
+    metadata:
+      labels:
+        app: weather
+        tier: front
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8888"
+        prometheus.io/path: /actuator/prometheus        
+    spec:
+      containers:
+        - image: brainupgrade/weather:openmeteo-v2
+          imagePullPolicy: Always
+          name: weather-front
+          env:
+            - name: MY_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace          
+            - name: spring.application.name
+              value: "$(MY_NAMESPACE)-weather-front"
+            - name: spring.datasource.url
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: spring.datasource.url
+            - name: spring.datasource.username
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: spring.datasource.username
+            - name: spring.datasource.password
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: spring.datasource.password
+            - name: weatherServiceURL
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: weatherServiceURL
+            - name: management.endpoints.web.exposure.include
+              value: "*"
+            - name: management.server.port
+              value: "8888"
+            - name: management.metrics.web.server.request.autotime.enabled
+              value: "true"
+            - name: management.metrics.tags.application
+              value: "$(MY_NAMESPACE)-weather-front"
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: weather-front
+spec:
+  type: ClusterIP
+  ports:
+    - name: app
+      port: 80
+      targetPort: 8080
+    - name: prometheus
+      port: 8888
+      targetPort: 8888
+  selector:
+    app: weather
+    tier: front      

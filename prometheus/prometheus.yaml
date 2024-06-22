@@ -24,3 +24,10 @@ scrape_configs:
   scrape_interval: 15s # This can be adjusted based on our needs
   static_configs:
     - targets: ['prometheus-springboot.rajesh.svc.cluster.local']  
+- job_name: 'springboot'
+  metrics_path: '/actuator/prometheus'
+  scrape_interval: 5s 
+  static_configs:
+    - targets: 
+      - 'weather-front.weather.svc.cluster.local:8888'
+      - 'weather-services.weather.svc.cluster.local:8888'
