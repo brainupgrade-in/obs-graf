@@ -707,8 +707,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -813,8 +812,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -915,8 +913,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1015,8 +1012,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1645,7 +1641,7 @@
     "list": []
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-1h",
     "to": "now"
   },
   "timeRangeUpdatedDuringEditOrView": false,
@@ -1653,6 +1649,6 @@
   "timezone": "browser",
   "title": "mtvlabk8su1 - Prometheus",
   "uid": "cdpis5hlm5dz4f",
-  "version": 21,
+  "version": 22,
   "weekStart": ""
 }
