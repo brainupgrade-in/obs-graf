@@ -46,7 +46,7 @@ helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx \
 
 # Change app URL
 ## Patch Ingress with new service name
-kubectl patch ingress obs --type=json  -p='[{"op":"replace","path":"/spec/rules/0/http/paths/0/backend/service/name","value":"prometheus"}]'
+kubectl patch ingress <user>-prom.brainupgrade.in --type=json  -p='[{"op":"replace","path":"/spec/rules/0/http/paths/0/backend/service/name","value":"prometheus"}]'
 
 # Prometheus Demo server
 https://prometheus.demo.do.prometheus.io
