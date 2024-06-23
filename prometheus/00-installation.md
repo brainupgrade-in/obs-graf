@@ -3,7 +3,7 @@
 kubectl create deploy ubuntu --image ubuntu -- tail -f /dev/null
 kubectl expose deploy ubuntu --name ubuntu-prom --port 80 --target-port 9090
 kubectl expose deploy ubuntu --name ubuntu-grafana --port 80 --target-port 3000
-kubectl patch ingress obs --type=json  -p='[{"op":"replace","path":"/spec/rules/0/http/paths/0/backend/service/name","value":"ubuntu-prom"}]'
+kubectl patch ingress <user>-prom.brainupgrade.in --type=json  -p='[{"op":"replace","path":"/spec/rules/0/http/paths/0/backend/service/name","value":"ubuntu-prom"}]'
 ## Prometheus Installation
 tmux
 kubectl exec -it deploy/ubuntu -- bash
@@ -15,9 +15,12 @@ cd prometheus
 ./prometheus
 
 ## Verification
-https://<user>-obs.brainupgrade.in
+https://<user>-prom.brainupgrade.in
 
 ## Prometheus metrics
 kubectl create deploy test --image brainupgrade/tshoot
 kubectl exec -it deploy/test -- bash
 curl ubuntu-prom/metrics
+
+## Node Exporter
+https://github.com/prometheus/node_exporter/releases
