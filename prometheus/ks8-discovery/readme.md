@@ -10,3 +10,10 @@ helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx \
 --set controller.metrics.enabled=true \
 --set controller.metrics.serviceMonitor.enabled=true \
 --set controller.metrics.serviceMonitor.additionalLabels.release="prometheus"    
+
+
+
+
+
+ServiceMonitor (custom k8s )
+release: prometheus   (k8s services)
