@@ -5,6 +5,8 @@ metadata:
     app: telegraf-kubernetes
   name: telegraf-kubernetes
 spec:
+  serviceAccountName: telegraf-kubernetes
+  serviceAccount: telegraf-kubernetes
   replicas: 1
   selector:
     matchLabels:
@@ -74,3 +76,9 @@ data:
       organization = "${INFLUX_ORG}"
       ## Destination bucket to write into.
       bucket = "${INFLUX_BUCKET}"
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: telegraf-kubernetes
+  
