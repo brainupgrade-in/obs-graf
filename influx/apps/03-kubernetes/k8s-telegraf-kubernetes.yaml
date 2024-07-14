@@ -43,12 +43,12 @@ metadata:
 data:
   telegraf.conf: |
     [agent]
-      interval = "10s"
+      interval = "30s"
       round_interval = true
       metric_batch_size = 1000
-      metric_buffer_limit = 10000
+      metric_buffer_limit = 20000
       collection_jitter = "0s"
-      flush_interval = "10s"
+      flush_interval = "60s"
       flush_jitter = "0s"
       precision = ""
       omit_hostname = false
@@ -61,6 +61,7 @@ data:
       kubernetes_services = ["https://kubernetes.default.svc.cluster.local/metrics"]
       bearer_token = "/run/secrets/kubernetes.io/serviceaccount/token"
       insecure_skip_verify = true
+      fieldpass = ["cpu_usage*", "memory_usage*", "disk_io*"]
     [[inputs.kube_inventory]]
       url = "https://kubernetes.default"
       bearer_token = "/run/secrets/kubernetes.io/serviceaccount/token"
