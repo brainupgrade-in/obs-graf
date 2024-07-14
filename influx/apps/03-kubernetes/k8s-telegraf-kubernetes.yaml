@@ -6,7 +6,6 @@ metadata:
   name: telegraf-kubernetes
 spec:
   serviceAccountName: telegraf-kubernetes
-  serviceAccount: telegraf-kubernetes
   replicas: 1
   selector:
     matchLabels:
