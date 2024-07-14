@@ -1,0 +1,94 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: telegraf-linux
+  labels:
+    app: telegraf-linux
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: telegraf-linux
+  template:
+    metadata:
+      labels:
+        app: telegraf-linux
+    spec:
+      containers:
+        - name: telegraf-linux
+          image: telegraf:latest
+          env:
+            - name: INFLUX_HOST
+              value: INFLUX_HOST
+            - name: INFLUX_TOKEN
+              value: INFLUX_TOKEN
+            - name: INFLUX_ORG
+              value: INFLUX_ORG
+            - name: INFLUX_BUCKET
+              value: INFLUX_BUCKET
+          volumeMounts:
+            - name: config
+              mountPath: /etc/telegraf/telegraf.conf
+              subPath: telegraf.conf
+      volumes:
+        - name: config
+          configMap:
+            name: telegraf-config-linux
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: telegraf-config-linux
+data:
+  telegraf.conf: |
+    [agent]
+      interval = "10s"
+      round_interval = true
+      metric_batch_size = 1000
+      metric_buffer_limit = 10000
+      collection_jitter = "0s"
+      flush_interval = "10s"
+      flush_jitter = "0s"
+      precision = ""
+      omit_hostname = false
+
+    [[inputs.cpu]]
+      ## Whether to report per-cpu stats or not
+      percpu = true
+      ## Whether to report total system cpu stats or not
+      totalcpu = true
+      ## If true, collect raw CPU time metrics.
+      collect_cpu_time = false
+      ## If true, compute and report the sum of all non-idle CPU states.
+      report_active = false
+
+    [[inputs.disk]]
+      ## By default stats will be gathered for all mount points.
+      ## Set mount_points will restrict the stats to only the specified mount points.
+      # mount_points = ["/"]
+
+      ## Ignore mount points by filesystem type.
+      ignore_fs = ["tmpfs", "devtmpfs", "devfs", "iso9660", "overlay", "aufs", "squashfs"]
+
+    # Read metrics about disk IO by device
+    [[inputs.diskio]]
+    # Get kernel statistics from /proc/stat
+    [[inputs.kernel]]
+    # Read metrics about memory usage
+    [[inputs.mem]]
+    # Read metrics about network interface usage
+    [[inputs.net]]
+    # Get the number of processes and group them by status
+    [[inputs.processes]]
+    # Read metrics about swap memory usage
+    [[inputs.swap]]
+    # Read metrics about system load & uptime
+    [[inputs.system]]
+
+
+    [[outputs.influxdb_v2]]
+      urls = ["${INFLUX_HOST}"]
+      token = "${INFLUX_TOKEN}"
+      organization = "${INFLUX_ORG}"
+      ## Destination bucket to write into.
+      bucket = "${INFLUX_BUCKET}"
