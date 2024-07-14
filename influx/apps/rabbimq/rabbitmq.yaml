@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rabbitmq
+  template:
+    metadata:
+      labels:
+        app: rabbitmq
+    spec:
+      containers:
+        - name: rabbitmq
+          image: rabbitmq:3-management
+          ports:
+            - containerPort: 5672 # AMQP Port
+            - containerPort: 1883 # MQTT port
+            - containerPort: 15672 # Management UI Port
+            - containerPort: 15692 # Prometheus metrics port
+          env:
+            - name: RABBITMQ_DEFAULT_USER
+              value: "mtvlabk8s"
+            - name: RABBITMQ_DEFAULT_PASS
+              value: "mtvlabk8s"
+          args:
+            - "rabbitmq-server"
+            - "--prometheus.return_per_object_metrics=true"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq
+  annotations:
+    prometheus.io/scrape: 'true'
+    prometheus.io/port: '15692'
+    prometheus.io/path: '/metrics'  
+spec:
+  type: NodePort
+  ports:
+    - port: 1883
+      targetPort: 1883
+      name: mqtt
+    - port: 5672
+      targetPort: 5672
+      name: amqp
+    - port: 80
+      targetPort: 15672
+      name: ui
+    - port: 15672
+      targetPort: 15672
+      name: management
+    - port: 15692
+      targetPort: 15692
+      name: prometheus
+  selector:
+    app: rabbitmq

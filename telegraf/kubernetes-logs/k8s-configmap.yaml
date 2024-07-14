@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: telegraf-config
+  namespace: monitoring
+data:
+  telegraf.conf: |
+    [agent]
+      interval = "10s"
+      round_interval = true
+      metric_batch_size = 1000
+      metric_buffer_limit = 10000
+      collection_jitter = "0s"
+      flush_interval = "10s"
+      flush_jitter = "0s"
+      precision = ""
+      hostname = ""
+      omit_hostname = true
+
+    [[inputs.tail]]
+      files = ["/var/log/pods/*/*.log"]
+      from_beginning = false
+      watch_method = "inotify"
+      name_override = "kubernetes_pod_logs"
+      pipe = false
+
+      [inputs.tail.tags]
+        source = "kubernetes_pod_logs"
+
+      [inputs.tail.multiline]
+        pattern = "^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}"
+        timeout = "5s"
+
+      data_format = "grok"
+      grok_patterns = ["CUSTOM_LOG", "CUSTOM_LOG2"]
+      grok_custom_patterns = '''
+        CUSTOM_LOG %{TIMESTAMP_ISO8601:timestamp} trace_id=%{DATA:trace_id} span_id=%{DATA:span_id} trace_flags=%{DATA:trace_flags} %{LOGLEVEL:loglevel} %{NUMBER} --- \\[%{DATA:thread}\\] %{JAVACLASS:class} : %{GREEDYDATA:message}
+        CUSTOM_LOG2 level=%{LOGLEVEL:loglevel} ts=%{TIMESTAMP_ISO8601:timestamp} caller=%{DATA:caller} index-store=%{DATA:index_store} msg=\"%{GREEDYDATA:message}\"
+      '''
+
+    [[outputs.http]]
+      url = "http://loki:3100/loki/api/v1/push"
+      method = "POST"
+      data_format = "json"
+      json_timestamp_units = "1ms"
+      [outputs.http.headers]
+        Content-Type = "application/json"
+      [outputs.http.tagpass]
+        job = ["telegraf"]
+        host = ["${HOSTNAME}"]

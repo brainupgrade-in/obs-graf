@@ -147,8 +147,8 @@ config:
   outputs:
     - influxdb_v2:
         urls:
-          - "http://influxdb.influxdb.svc:8086"
-        token: ODgoLFim1Ycl3aIOENDewrwrR3olslK65qJyD0YZXTVvclzQRagvtAippyjQ0Qh-9a61mRvw6ditFspvXdzmeg==
+          - "$INFLUXDB_URL"
+        token: "$INFLUXDB_TOKEN"
         organization: "org"
         bucket: "telegraf"
   inputs:

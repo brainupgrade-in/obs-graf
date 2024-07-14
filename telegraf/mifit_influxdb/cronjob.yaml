@@ -1,0 +1,49 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: zepp-to-influxdb
+spec:
+  schedule: "1/5 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: zepp-to-influxdb
+            image: bentasker12/zepp_to_influxdb:latest
+            imagePullPolicy: IfNotPresent
+            env:
+            - name: INFLUXDB_BUCKET
+              value: "mifit"
+            - name: INFLUXDB_MEASUREMENT
+              value: "zepp"
+            - name: QUERY_DURATION
+              value: "2"
+              
+            - name: INFLUXDB_TOKEN
+              valueFrom: 
+                 secretKeyRef:
+                    name: influxdb
+                    key: influxdb_token
+            - name: INFLUXDB_ORG
+              valueFrom: 
+                 secretKeyRef:
+                    name: influxdb
+                    key: influxdb_org
+            - name: INFLUXDB_URL
+              valueFrom: 
+                 secretKeyRef:
+                    name: influxdb
+                    key: influxdb_url
+            - name: ZEPP_EMAIL
+              valueFrom: 
+                 secretKeyRef:
+                    name: zepp
+                    key: email
+            - name: ZEPP_PASS
+              valueFrom: 
+                 secretKeyRef:
+                    name: zepp
+                    key: pass
+                    
+          restartPolicy: OnFailure

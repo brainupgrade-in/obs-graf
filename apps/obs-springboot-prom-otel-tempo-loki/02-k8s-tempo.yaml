@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: tempo
+spec:
+  serviceName: tempo
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tempo
+  template:
+    metadata:
+      labels:
+        app: tempo
+    spec:
+      containers:
+        - name: tempo
+          image: grafana/tempo:2.4.1
+          args: 
+            - --target=all
+            - --storage.trace.backend=local
+            - --storage.trace.local.path=/var/tempo
+            - --auth.enabled=false
+          ports:
+            - containerPort: 14250
+            - containerPort: 4317
+            - containerPort: 80
+          volumeMounts:
+            - name: tempo-data
+              mountPath: /var/tempo
+      volumes:
+        - name: tempo-data
+          persistentVolumeClaim:
+            claimName: tempo-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tempo
+spec:
+  selector:
+    app: tempo
+  ports:
+    - protocol: TCP
+      port: 14250
+      targetPort: 14250
+      name: grpc # gRPC ingestion
+    - protocol: TCP
+      port: 4317
+      targetPort: 4317
+      name: otlp # OTLP over gRPC
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      name: ui # UI
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: tempo-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi

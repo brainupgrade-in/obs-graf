@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: obs-springboot-rabbitmq
+  name: obs-springboot-rabbitmq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: obs-springboot-rabbitmq
+  template:
+    metadata:
+      labels:
+        app: obs-springboot-rabbitmq
+    spec:
+      containers:
+      - image: brainupgrade/observability-springboot-rabbitmq:1
+        name: obs-springboot-rabbitmq
+        env:
+        - name: management.metrics.export.influx.token
+          value: "token"
+        - name: server.port
+          value: "8080"
+        - name: management.metrics.export.influx.api-version
+          value: "V2"
+        - name: MY_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace          
+        - name: spring.application.name
+          value: "$(MY_NAMESPACE)-springboot-rabbitmq" 
+        - name: environment
+          value: "production"
+        - name: management.metrics.export.influx.auto-create-db
+          value: "false"
+        - name: management.metrics.export.influx.bucket
+          value: "springboot"
+        - name: management.metrics.export.influx.org
+          value: "org"
+        - name: management.metrics.export.influx.uri
+          value: "http://influxdb:8086"
+        - name: management.endpoints.web.exposure.include
+          value: "*"
+        - name: management.metrics.web.server.request.autotime.enabled
+          value: "true"
+        - name: management.metrics.tags.application
+          value: "$(MY_NAMESPACE)-springboot-rabbitmq"     
+        - name: spring.rabbitmq.host
+          value: rabbitmq
+        - name: spring.rabbitmq.port
+          value: "5672"
+        - name: spring.rabbitmq.username
+          value: guest
+        - name: spring.rabbitmq.password
+          value: guest     
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: obs-springboot-rabbitmq
+  labels:
+    app: obs-springboot-rabbitmq
+  annotations:
+    prometheus.io/scrape: 'true'
+    prometheus.io/port: '8080'
+    prometheus.io/path: '/actuator/prometheus'
+spec:
+  ports:
+  - name: metrics
+    port: 80
+    targetPort: 8080
+  selector:
+    app: obs-springboot-rabbitmq        

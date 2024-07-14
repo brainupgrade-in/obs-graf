@@ -205,7 +205,7 @@ kind: Service
 metadata:
   name: weather-front
 spec:
-  type: ClusterIP
+  type: NodePort
   ports:
     - name: app
       port: 80

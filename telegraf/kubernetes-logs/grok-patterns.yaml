@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grok-patterns
+  namespace: monitoring
+data:
+  custom-patterns.grok: |
+    CUSTOM_LOG %{TIMESTAMP_ISO8601:timestamp} trace_id=%{DATA:trace_id} span_id=%{DATA:span_id} trace_flags=%{DATA:trace_flags} %{LOGLEVEL:loglevel} %{NUMBER} --- \\[%{DATA:thread}\\] %{JAVACLASS:class} : %{GREEDYDATA:message}
+    CUSTOM_LOG2 level=%{LOGLEVEL:loglevel} ts=%{TIMESTAMP_ISO8601:timestamp} caller=%{DATA:caller} index-store=%{DATA:index_store} msg=\"%{GREEDYDATA:message}\"

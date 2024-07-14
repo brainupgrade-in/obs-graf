@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: telegraf
+  namespace: monitoring
+  labels:
+    app: telegraf
+spec:
+  selector:
+    matchLabels:
+      app: telegraf
+  template:
+    metadata:
+      labels:
+        app: telegraf
+    spec:
+      serviceAccountName: telegraf
+      containers:
+        - name: telegraf
+          image: telegraf:1.31.1
+          env:
+            - name: HOSTNAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+          volumeMounts:
+            - name: telegraf-config
+              mountPath: /etc/telegraf/telegraf.conf
+              subPath: telegraf.conf
+            - name: varlog
+              mountPath: /var/log
+      volumes:
+        - name: telegraf-config
+          configMap:
+            name: telegraf-config
+        - name: varlog
+          hostPath:
+            path: /var/log
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: telegraf
+  namespace: monitoring
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: telegraf
+rules:
+  - apiGroups: [""]
+    resources: ["pods", "namespaces", "nodes", "nodes/proxy"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: telegraf
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: telegraf
+subjects:
+  - kind: ServiceAccount
+    name: telegraf
+    namespace: monitoring

@@ -20,16 +20,8 @@ https://www.influxdata.com/blog/monitoring-kubernetes-architecture/
 echo -n 'admin:admin123@influx.brainupgrade.in/default' | base64
 k create secret generic influxdb-dsn-secret -n influxdb --from-literal=dsn=YWRtaW46YWRtaW4xMjNAaW5mbHV4LmJyYWludXBncmFkZS5pbi9kZWZhdWx0
 # influxdb API token
-API Token from influx UI: jenkins ODgoLFim1Ycl3aIOENDewrwrR3olslK65qJyD0YZXTVvclzQRagvtAippyjQ0Qh-9a61mRvw6ditFspvXdzmeg==
-# telegraf k8s setup
-https://github.com/influxdata/helm-charts/blob/master/charts/telegraf/README.md
-helm repo add influxdata https://helm.influxdata.com/
-helm repo update
-helm upgrade --install telegraf influxdata/telegraf --namespace influxdb --create-namespace --set persistence.enabled=true -f telegraf-values.yaml
+API Token from influx UI: jenkins $TOKEN
 
-# Telegraf - Operator
-helm upgrade --install telegraf-operator influxdata/telegraf-operator
-Uses the secret object telegraf-operator-classes
 
 # Dashboards - influxdb
 928 - telegraf
@@ -43,3 +35,6 @@ https://www.influxdata.com/blog/monitoring-jenkins-with-influxdb/
 https://www.influxdata.com/blog/monitoring-kubernetes-architecture/
 https://github.com/influxdata/telegraf-operator#pod-level-annotations
 https://grafana.com/grafana/dashboards/19419-opentelemetry-apm/
+https://awesome.influxdata.com/ A Book on InfluxDB
+https://grafana.com/docs/grafana/latest/datasources/influxdb/template-variables/
+https://github.com/influxdata/community-templates#templates

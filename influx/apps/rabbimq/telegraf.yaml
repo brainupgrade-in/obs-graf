@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: telegraf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: telegraf
+  template:
+    metadata:
+      labels:
+        app: telegraf
+    spec:
+      containers:
+        - name: telegraf
+          image: telegraf:latest
+          env:
+          - name: HOSTNAME
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.nodeName          
+          - name: INFLUXDB_TOKEN
+            value: "token"
+          volumeMounts:
+            - name: telegraf-config
+              mountPath: /etc/telegraf/telegraf.conf
+              subPath: telegraf.conf
+      volumes:
+        - name: telegraf-config
+          configMap:
+            name: telegraf-config
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: telegraf-config
+  labels:
+    k8s-app: telegraf
+data:
+  telegraf.conf: |+
+    [global_tags]
+      env = "$ENV"
+    [agent]
+      hostname = "$HOSTNAME"
+    [[inputs.rabbitmq]]
+      url = "http://rabbitmq:15672"
+      tags = ["node=rabbitmq"]
+      username = "mtvlabk8s"
+      password = "mtvlabk8s"  
+    # [[inputs.prometheus]]
+    #   urls = ["http://rabbitmq:15692/metrics"]
+    #   name_prefix = "rabbitmq_"
+    #   [inputs.prometheus.tags]
+    #     environment = "kind-cluster"
+    [[outputs.influxdb_v2]]
+      urls = ["http://influxdb:8086"] # required
+      token = "$INFLUXDB_TOKEN"
+      organization = "org"
+      bucket = "rabbitmq"
+      timeout = "5s"
+      user_agent = "telegraf"

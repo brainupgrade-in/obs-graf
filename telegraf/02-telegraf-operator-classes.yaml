@@ -7,8 +7,8 @@ stringData:
   # helm upgrade --install telegraf-operator influxdata/telegraf-operator
   app: |+
     [[outputs.influxdb_v2]]
-      urls = ["http://influxdb.influxdb.svc:8086"]
-      token = "ODgoLFim1Ycl3aIOENDewrwrR3olslK65qJyD0YZXTVvclzQRagvtAippyjQ0Qh-9a61mRvw6ditFspvXdzmeg=="
+      urls = ["$INFLUXDB_URL"]
+      token = "$INFLUXDB_TOKEN"
       organization = "org"
       bucket = "app"
       timeout = "5s"

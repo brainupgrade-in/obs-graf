@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: telegraf
+  labels:
+    app: telegraf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: telegraf
+  template:
+    metadata:
+      labels:
+        app: telegraf
+    spec:
+      containers:
+        - name: telegraf
+          image: telegraf:latest
+          env:
+            - name: INFLUX_HOST
+              value: INFLUX_HOST
+            - name: INFLUX_TOKEN
+              value: INFLUX_TOKEN
+            - name: INFLUX_ORG
+              value: INFLUX_ORG
+            - name: INFLUX_BUCKET
+              value: INFLUX_BUCKET
+          volumeMounts:
+            - name: config
+              mountPath: /etc/telegraf/telegraf.conf
+              subPath: telegraf.conf
+      volumes:
+        - name: config
+          configMap:
+            name: telegraf-config
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: telegraf-config
+data:
+  telegraf.conf: |
+  [agent]
+    interval = "10s"
+    round_interval = true
+    metric_batch_size = 1000
+    metric_buffer_limit = 10000
+    collection_jitter = "0s"
+    flush_interval = "10s"
+    flush_jitter = "0s"
+    precision = ""
+    omit_hostname = false
+
+  [[inputs.internal]]
+    collect_memstats = true
+
+  [[outputs.influxdb_v2]]
+    urls = ["${INFLUX_HOST}"]
+    token = "${INFLUX_TOKEN}"
+    organization = "${INFLUX_ORG}"
+    ## Destination bucket to write into.
+    bucket = "${INFLUX_BUCKET}"

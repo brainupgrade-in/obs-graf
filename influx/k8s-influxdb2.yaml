@@ -22,9 +22,9 @@ spec:
                   - name: DOCKER_INFLUXDB_INIT_MODE
                     value: setup
                   - name: DOCKER_INFLUXDB_INIT_USERNAME
-                    value: admin                    
+                    value: mtvlabk8su1                    
                   - name: DOCKER_INFLUXDB_INIT_PASSWORD    
-                    value: admin123
+                    value: mtvlabk8s
                   - name: DOCKER_INFLUXDB_INIT_ORG
                     value: org  
                   - name: DOCKER_INFLUXDB_INIT_BUCKET
@@ -51,11 +51,10 @@ apiVersion: v1
 kind: Service
 metadata:
     name: influxdb
-    namespace: influxdb
 spec:
     ports:
       - name: influxdb
-        port: 8086
+        port: 80
         targetPort: 8086
     selector:
         app: influxdb

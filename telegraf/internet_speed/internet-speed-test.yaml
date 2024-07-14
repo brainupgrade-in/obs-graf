@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: telegraf-internet-speed
+  name: telegraf-internet-speed
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: telegraf-internet-speed
+  template:
+    metadata:
+      labels:
+        app: telegraf-internet-speed
+    spec:
+      containers:
+      - command:
+        - telegraf 
+        args:
+        - --config 
+        - https://us-east-1-1.aws.cloud2.influxdata.com/api/v2/telegrafs/0d50c9effcd8f000
+        image: telegraf:1.30-alpine
+        name: telegraf
+        env:
+        - name: INFLUX_TOKEN
+          value: INFLUX_TOKEN
