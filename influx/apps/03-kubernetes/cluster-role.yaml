@@ -16,6 +16,7 @@ rules:
   - configmaps
   - secrets
   - resourcequotas
+  - nodes/metrics
   verbs: ["get", "list", "watch"]
 - apiGroups: ["apps"]
   resources:
@@ -46,3 +47,5 @@ rules:
   - nodes
   - pods
   verbs: ["get", "list", "watch"]
+- nonResourceURLs: ["/metrics"]
+  verbs: ["get"]  
