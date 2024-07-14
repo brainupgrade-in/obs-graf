@@ -4,6 +4,7 @@
 namespace=$1
 
 cat <<EOF | kubectl apply -f -
+
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -17,4 +18,5 @@ roleRef:
   kind: ClusterRole
   name: telegraf-kubernetes-mtvlabk8s
   apiGroup: rbac.authorization.k8s.io
-EOF  
+
+EOF
