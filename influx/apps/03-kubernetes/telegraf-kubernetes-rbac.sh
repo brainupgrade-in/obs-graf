@@ -16,7 +16,7 @@ subjects:
   namespace: ${namespace}
 roleRef:
   kind: ClusterRole
-  name: telegraf-kubernetes-mtvlabk8s
+  name: view
   apiGroup: rbac.authorization.k8s.io
 
 EOF
