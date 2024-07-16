@@ -6,7 +6,7 @@ https://www.rabbitmq.com/docs/prometheus
 # Enable prometheus metrics scrapping
 kubectl apply -f rabbitmq-prometheus-service.yaml
 
-# Grafana Dashboard
+# Grafana Dashboard - TODO
 ## Prometheus
 10991 - RabbitMQ Overview
 6566 - RabbiMQ Performance

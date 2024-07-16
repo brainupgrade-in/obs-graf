@@ -6,7 +6,7 @@
                   |> filter(fn: (r) => r._measurement == "internal_agent")
                   |> filter(fn: (r) => r._field == "metrics_gathered")
 
-        name: Agent - Metrics gathered vs written per second - Xy
+        name: Agent - Metrics gathered or written per second - Xy
                 import "experimental/aggregate"
                   from(bucket: "Telegraf")
                   |> range(start: v.timeRangeStart, stop: v.timeRangeStop)
@@ -15,7 +15,7 @@
                   |> aggregate.rate(every: v.windowPeriod, unit: 1s, groupColumns: ["_field"])                  
 
 
-Inputs - metrics gathered per input per minute - Xy
+Inputs - metrics gathered per input  - Xy
                 import "experimental/aggregate"
                 from(bucket: "Telegraf")
                   |> range(start: v.timeRangeStart, stop: v.timeRangeStop)

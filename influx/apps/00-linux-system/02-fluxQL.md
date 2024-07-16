@@ -89,5 +89,12 @@ from(bucket: "${bucket}")
   |> filter(fn: (r) => r.host == "${linux_host}")
   |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)
 
+# Dashboard template variables
+## linux_host
+import "influxdata/influxdb/v1"
+v1.tagValues(bucket: "linux", tag: "host")
+## bucket
+custom option: linux
+
 # Reference
 https://raw.githubusercontent.com/influxdata/community-templates/master/linux_system/linux_system.yml
