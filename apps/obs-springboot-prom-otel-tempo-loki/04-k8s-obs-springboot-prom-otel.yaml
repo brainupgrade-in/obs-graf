@@ -1,12 +1,11 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   labels:
     app: obs-springboot
   name: obs-springboot
 spec:
-  replicas: 3
-  serviceName: obs-springboot
+  replicas: 1
   selector:
     matchLabels:
       app: obs-springboot
