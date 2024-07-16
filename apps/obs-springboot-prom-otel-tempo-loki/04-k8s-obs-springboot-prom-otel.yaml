@@ -6,6 +6,7 @@ metadata:
   name: obs-springboot
 spec:
   replicas: 3
+  serviceName: obs-springboot
   selector:
     matchLabels:
       app: obs-springboot
