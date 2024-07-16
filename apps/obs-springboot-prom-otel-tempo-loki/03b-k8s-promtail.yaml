@@ -11,7 +11,7 @@ spec:
       labels:
         app: promtail
     spec:
-      serviceAccountName: promtail-mtvlabk8su1
+      # serviceAccountName: promtail-mtvlabk8su1
       initContainers:
         - name: init-promtail-config
           image: busybox
