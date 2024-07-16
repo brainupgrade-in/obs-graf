@@ -29,7 +29,7 @@ spec:
             fieldRef:
               fieldPath: metadata.name
         - name: spring.application.name
-          value: "$(MY_NAMESPACE)-obs-springboot" 
+          value: "$(MY_NAMESPACE)-$(POD_NAME)" 
         - name: environment
           value: "production"
         - name: TARGET_ONE_HOST
@@ -81,6 +81,9 @@ spec:
   ports:
   - name: metrics
     port: 80
+    targetPort: 8080
+  - name: call
+    port: 8080
     targetPort: 8080
   selector:
     app: obs-springboot
