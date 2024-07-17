@@ -28,7 +28,9 @@ k annotate deploy/taskmanager prometheus.io/scrape="true" prometheus.io/port="80
 
 # Load generator
     kubectl create deploy test --image brainupgrade/tshoot
+
     kubectl exec -it deploy/test -- bash
+    
     for i in {1..30};do curl -s taskmanager/api/test/slow?delay=10;done
 
     for i in {1..1};do curl -X POST -H "Content-Type: application/json" -d "{\"title\":\"Task $i\"}" taskmanager/api/todos ; done
