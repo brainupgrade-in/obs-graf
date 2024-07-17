@@ -53,8 +53,24 @@ Label: trace_id
     cd obs-graf/apps/obs-springboot-prom-otel-tempo-loki
     while true; do ./test.sh obs-springboot.<user> ;sleep 5s;done
 
+# Dashboard Variables
+app_name lable_values(application)
 
+LogRef:
 
+log_keyword
+
+app
+
+# Dashboard panels
+
+Log type rate:
+
+sum by(type) (rate({app=~"$app.*"} | pattern `<date> <time> <_>=<trace_id> <_>=<span_id> <_>=<trace_flags> <type> <_> --- <msg>` | type != "" |= "$log_keyword" [1m]))
+
+Logs of all spring boot panels:
+
+{app=~"$app.*"} | pattern `<date> <time> <_>=<trace_id> <_>=<span_id> <_>=<trace_flags> <type> <_> --- <msg>` | line_format "{{.app}}\t{{.type}}\ttrace_id={{.trace_id}}\t{{.msg}}" |= "$log_keyword"
 
 # Tmux commands
 Window split: ctrl+b "
