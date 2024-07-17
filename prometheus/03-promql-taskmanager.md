@@ -32,3 +32,6 @@ kubectl annotate svc taskmanager prometheus.io/scrape="true" prometheus.io/port=
 
 # Set prometheus metrics tags
 k set env deploy taskmanager management.metrics.tags.application=taskmanager management.metrics.tags.service=taskmanager
+
+# Grafana Dashboard 
+12685 - Kancy Spring Boot 
