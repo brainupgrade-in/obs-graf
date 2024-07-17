@@ -1,8 +1,13 @@
 # Loki - Tempo
 Derived Fields
-    Regex: (?:trace_id)=(\w+)    OR (?:trace_id)=(\w+).*?(?:traceID)=(\w+)
+    Regex: (?:trace_id)=(\w+) 
+    
+    
     Query: # ${__value.raw}
 
+OR (?:trace_id)=(\w+).*?(?:traceID)=(\w+)
+    
+    
 Internal Link: Tempo
 
 # Prometheus
