@@ -51,7 +51,7 @@ Label: trace_id
 -- second half
 
     cd obs-graf/apps/obs-springboot-prom-otel-tempo-loki
-    ./test.sh obs-springboot.<user> 
+    while true; do ./test.sh obs-springboot.<user> ;done
 
 
 
