@@ -39,14 +39,21 @@ Label: trace_id
     kubectl create deploy loadtest --image jstarcher/siege -- "tail" "-f" "/dev/null"
     kubectl exec -it deploy/loadtest -- sh
     apk update && apk add bash git tmux curl
+
 -- split the window in two halves (ctrl+b ")
+
 -- first half
+
     git clone https://github.com/brainupgrade-in/obs-graf
     cd obs-graf/app/obs-springboot-prom-otel-tempo-loki
     ./test-load.sh obs-springboot.<user> 10
+
 -- second half
+
     cd obs-graf/app/obs-springboot-prom-otel-tempo-loki
-    ./test.sh obs-springboot.<user> 10
+    ./test.sh obs-springboot.<user> 
+
+
 
 
 # Tmux commands
