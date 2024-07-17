@@ -26,3 +26,9 @@ sum by (le) (http_server_requests_seconds_bucket{job="taskmanager"})
 
 # Rate of status including errors
 sum by (status) (rate(http_server_requests_seconds_count[5m]))
+
+# For auto discovery using service annotation
+kubectl annotate svc taskmanager prometheus.io/scrape="true" prometheus.io/port="8080" prometheus.io/path="/actuator/prometheus"
+
+# Set prometheus metrics tags
+k set env deploy taskmanager management.metrics.tags.application=taskmanager management.metrics.tags.service=taskmanager
