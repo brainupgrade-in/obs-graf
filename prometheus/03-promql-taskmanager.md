@@ -8,6 +8,19 @@
         static_configs:
           - targets: ['taskmanager']
 
+## Prometheus config
+    prometheus.yml: |
+      global:
+        scrape_interval: 15s
+      scrape_configs:
+        - job_name: 'prometheus'
+          static_configs:
+            - targets: ['localhost:9090']
+        - job_name: 'taskmanager'
+          metrics_path: '/actuator/prometheus'
+          static_configs:
+            - targets: ['taskmanager']          
+
 # Load generator
   kubectl create deploy test --image brainupgrade/tshoot
   kubectl exec -it test -- bash
