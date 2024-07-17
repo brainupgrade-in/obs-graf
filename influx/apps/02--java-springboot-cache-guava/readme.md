@@ -6,8 +6,8 @@ kubectl apply -f k8s-cache-guava.yaml
 - Add bucket=springboot, org=org, user=, password=
 
 # Grafana Dashboard 
-## InfluxDB
-20668 (JVM & DB Metrics - Micrometer)
+
+20668 (JVM & DB Metrics - Micrometer) Databse InfluxDB
 
 # Custom metrics - hello
 
