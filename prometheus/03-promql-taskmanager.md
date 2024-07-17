@@ -19,7 +19,12 @@
         - job_name: 'taskmanager'
           metrics_path: '/actuator/prometheus'
           static_configs:
-            - targets: ['taskmanager']          
+            - targets: ['taskmanager']       
+
+# App Annotations
+k set env deploy/taskmanager management.metrics.tags.application=taskmanager management.metrics.tags.service=taskmanager               
+
+k annotate deploy/taskmanager prometheus.io/scrape="true" prometheus.io/port="8080" prometheus.io/path="/actuator/prometheus"
 
 # Load generator
   kubectl create deploy test --image brainupgrade/tshoot
