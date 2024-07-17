@@ -45,12 +45,12 @@ Label: trace_id
 -- first half
 
     git clone https://github.com/brainupgrade-in/obs-graf
-    cd obs-graf/app/obs-springboot-prom-otel-tempo-loki
+    cd obs-graf/apps/obs-springboot-prom-otel-tempo-loki
     ./test-load.sh obs-springboot.<user> 10
 
 -- second half
 
-    cd obs-graf/app/obs-springboot-prom-otel-tempo-loki
+    cd obs-graf/apps/obs-springboot-prom-otel-tempo-loki
     ./test.sh obs-springboot.<user> 
 
 
