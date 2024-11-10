@@ -31,41 +31,16 @@ spec:
       labels:
         app: ubuntu-obs
     spec:
-      volumes:
-      - name: opt
-        emptyDir: {}
-      initContainers:
-      - name: prometheus
-        image: brainupgrade/tshoot
-        command: ['bash', '-c', 'cd /opt && wget https://github.com/prometheus/prometheus/releases/download/v2.55.1/prometheus-2.55.1.linux-amd64.tar.gz']
-        volumeMounts:
-        - name: opt
-          mountPath: /opt
-      - name: node-exporter
-        image: brainupgrade/tshoot
-        command: ['bash', '-c', 'cd /opt && wget https://github.com/prometheus/node_exporter/releases/download/v1.8.2/node_exporter-1.8.2.linux-amd64.tar.gz']
-        volumeMounts:
-        - name: opt
-          mountPath: /opt
-      - name: grafana
-        image: brainupgrade/tshoot
-        command: ['bash', '-c', 'cd /opt && wget https://dl.grafana.com/enterprise/release/grafana-enterprise_11.3.0_amd64.deb']
-        volumeMounts:
-        - name: opt
-          mountPath: /opt
       containers:
-      - image: ubuntu:24.10
+      - image: brainupgrade/ubuntu-obs
         name: ubuntu-obs
-        volumeMounts:
-        - name: opt
-          mountPath: /opt
         resources: 
           limits:
-            cpu: 500m
-            memory: 1024Mi
-          requests:
             cpu: 1000m
-            memory: 2048Mi         
+            memory: 2048Mi
+          requests:
+            cpu: 500m
+            memory: 1024Mi         
         ports:
         - containerPort: 9090
           name: ubuntu-prom
