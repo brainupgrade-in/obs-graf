@@ -61,3 +61,27 @@ k set env deploy taskmanager management.metrics.tags.application=taskmanager man
 
 # Grafana Dashboard 
 12685 - Kancy Spring Boot 
+
+# More  PromQL
+## 50th Percentile (Median) of HTTP Request Durations:
+
+histogram_quantile(0.5, sum(rate(http_server_requests_seconds_bucket{job="taskmanager"}[5m])) by (le))
+
+## 95th percentile of HTTP request duration
+histogram_quantile(0.95, sum(rate(http_server_requests_seconds_bucket{job="taskmanager"}[5m])) by (le))
+
+## Alert if 99th Percentile Response Time Exceeds 400ms
+histogram_quantile(0.99, sum(rate(http_server_requests_seconds_bucket{job="taskmanager"}[5m])) by (le)) > 0.4
+
+## Total Number of Requests in the Last Hour:
+increase(http_server_requests_seconds_count{job="taskmanager"}[15m])
+
+## Requests per Second (RPS) Rate:
+rate(http_server_requests_seconds_count{job="taskmanager"}[5m])
+
+
+## Percentage of Requests Served Under 200ms (SLO Compliance)
+sum(rate(http_server_requests_seconds_bucket{job="taskmanager", le="0.2"}[5m])) 
+/
+sum(rate(http_server_requests_seconds_count{job="taskmanager"}[5m])) * 100
+

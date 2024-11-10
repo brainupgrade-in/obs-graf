@@ -1,5 +1,8 @@
 # Set up for exporter
+```bash
+kubectl apply -f https://raw.githubusercontent.com/brainupgrade-in/obs-graf/refs/heads/main/prometheus/apps/mariadb/mariadb.yaml
 kubectl exec -it deploy/mariadb -- bash
+
 mysql -u root -p 
 create user 'exporter'@'localhost' identified by 'exporter' with max_user_connections 3;
 grant process, replication client, select on *.* to 'exporter'@'localhost';
@@ -7,14 +10,16 @@ grant process, replication client, select on *.* to 'exporter'@'localhost';
 exit
 
 cd /opt
-tar xvzf 
+tar -xvzf mysqld_exporter-0.16.0.linux-amd64.tar.gz
+
+cd mysqld_exporter-0.16.0.linux-amd64
 
 echo "[client]">>.my.cnf
 echo "user=exporter">>.my.cnf
 echo "password=exporter">>.my.cnf
 
 ./mysqld_exporter & 
-
+```
 # Update prometheus.yml
     - job_name: mysql # To get metrics about the mysql exporter’s targets
       static_configs:
