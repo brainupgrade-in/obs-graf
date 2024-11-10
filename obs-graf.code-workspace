@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../observability-springboot-rabbitmq"
+		},
+		{
+			"path": "../prometheus-springboot-taskmanager"
+		},
+		{
+			"path": "../prometheus-springboot-simple"
+		},
+		{
+			"path": "../../../workspace/k8s-unigps"
+		}
+	]
+}

@@ -45,3 +45,14 @@ histogram_quantile(0.9, sum by (le) (rate(prometheus_http_request_duration_secon
 histogram_quantile(0.9,sum by (le) (rate(prometheus_http_response_size_bytes_bucket{}[5m])))
 
 
+# Node Exporter metrics
+node_memory_MemAvailable_bytes
+node_cpu_seconds_total   - max min count
+topk (3,sum(node_cpu_seconds_total) by (mode))
+bottomk (3,sum(node_cpu_seconds_total) by (mode))
+changes(process_start_time_seconds{job="node_exporter"}[1h])
+predict_linear(node_memory_MemFree_bytes{job="node_exporter"}[1h],2*60*60)/1024/1024
+(avg by (instance) (irate (node_cpu_seconds_total{mode="system"}[1m]))*100)
+
+# Other prometheus metrics
+process_cpu_seconds_total

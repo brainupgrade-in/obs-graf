@@ -1,0 +1,73 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ubuntu-obs
+spec:
+  type: ClusterIP
+  ports:
+    - name: ubuntu-prom
+      port: 9090
+      targetPort: 9090
+    - name: ubuntu-graf
+      port: 3000
+      targetPort: 3000
+    - name: node-exporter
+      port: 9100
+      targetPort: 9100    
+  selector:
+    app: ubuntu-obs
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ubuntu-obs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ubuntu-obs
+  template:
+    metadata:
+      labels:
+        app: ubuntu-obs
+    spec:
+      volumes:
+      - name: opt
+        emptyDir: {}
+      initContainers:
+      - name: prometheus
+        image: brainupgrade/tshoot
+        command: ['bash', '-c', 'cd /opt && wget https://github.com/prometheus/prometheus/releases/download/v2.55.1/prometheus-2.55.1.linux-amd64.tar.gz']
+        volumeMounts:
+        - name: opt
+          mountPath: /opt
+      - name: node-exporter
+        image: brainupgrade/tshoot
+        command: ['bash', '-c', 'cd /opt && wget https://github.com/prometheus/node_exporter/releases/download/v1.8.2/node_exporter-1.8.2.linux-amd64.tar.gz']
+        volumeMounts:
+        - name: opt
+          mountPath: /opt
+      - name: grafana
+        image: brainupgrade/tshoot
+        command: ['bash', '-c', 'cd /opt && wget https://dl.grafana.com/enterprise/release/grafana-enterprise_11.3.0_amd64.deb']
+        volumeMounts:
+        - name: opt
+          mountPath: /opt
+      containers:
+      - image: ubuntu:24.10
+        name: ubuntu-obs
+        volumeMounts:
+        - name: opt
+          mountPath: /opt
+        resources: 
+          limits:
+            cpu: 500m
+            memory: 1024Mi
+          requests:
+            cpu: 1000m
+            memory: 2048Mi         
+        ports:
+        - containerPort: 9090
+          name: ubuntu-prom
+        - containerPort: 3000
+          name: ubuntu-graf        

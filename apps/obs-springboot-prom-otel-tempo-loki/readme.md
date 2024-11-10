@@ -1,13 +1,13 @@
 # Loki - Tempo
 Derived Fields
-    Regex: (?:trace_id)=(\w+) 
+    Name: TraceId Regex: (?:trace_id)=(\w+) 
     
     
     Query: # ${__value.raw}
 
 OR (?:trace_id)=(\w+).*?(?:traceID)=(\w+)
     
-    
+
 Internal Link: Tempo
 
 # Prometheus
@@ -30,7 +30,7 @@ Label: trace_id
     Data Source: Prometheus
     Span start: -5m
     Span end: 5m
-    Tags:  service.name as pod  http.rout as uri
+    Tags:  service.name as pod  http.route as uri
 
     Link Label: Request Rate  Query: sum by(uri)(rate(http_server_requests_seconds_count{$__tags}[1m]))
 
@@ -65,7 +65,7 @@ LogRef:
 
 log_keyword
 
-app
+app label_values(application)
 
 # Dashboard panels
 

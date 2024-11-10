@@ -8,9 +8,9 @@ kubectl patch ingress <user>-prom.brainupgrade.in --type=json  -p='[{"op":"repla
 tmux
 kubectl exec -it deploy/ubuntu -- bash
 apt update && apt install -y wget curl
-wget https://github.com/prometheus/prometheus/releases/download/v2.53.0/prometheus-2.53.0.linux-amd64.tar.gz 
+wget https://github.com/prometheus/prometheus/releases/download/v2.55.1/prometheus-2.55.1.linux-amd64.tar.gz 
 mkdir -p /prometheus
-tar -xvzf prometheus-2.53.0.linux-amd64.tar.gz -C /prometheus --strip-components=1
+tar -xvzf prometheus-2.55.1.linux-amd64.tar.gz -C /prometheus --strip-components=1
 cd prometheus
 ./prometheus
 
