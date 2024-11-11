@@ -2,7 +2,7 @@
 
 ```bash
 cd /opt
-tar xvzf node_exporter-1.8.2.linux-amd64.tar.gz -C /node-exporter --strip-components=1
+tar -xvzf node_exporter-1.8.2.linux-amd64.tar.gz 
 ./node-exporter
 ```
 

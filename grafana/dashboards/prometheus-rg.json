@@ -37,7 +37,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "cdpgtzzipr18gc"
+        "uid": "de3jmuqko7i80b"
       },
       "description": "Buckets in seconds",
       "fieldConfig": {
@@ -92,7 +92,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "cdpgtzzipr18gc"
+            "uid": "de3jmuqko7i80b"
           },
           "editorMode": "code",
           "expr": "sum by (le) (prometheus_http_request_duration_seconds_bucket{})",
@@ -110,7 +110,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "cdpgtzzipr18gc"
+        "uid": "de3jmuqko7i80b"
       },
       "description": "Summary data type - Histogram distribution",
       "fieldConfig": {
@@ -167,7 +167,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "cdpgtzzipr18gc"
+            "uid": "de3jmuqko7i80b"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -187,7 +187,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "cdpgtzzipr18gc"
+        "uid": "de3jmuqko7i80b"
       },
       "fieldConfig": {
         "defaults": {
@@ -268,7 +268,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "cdpgtzzipr18gc"
+            "uid": "de3jmuqko7i80b"
           },
           "editorMode": "code",
           "expr": "rate(prometheus_http_request_duration_seconds_sum{}[5m]) / rate(prometheus_http_request_duration_seconds_count{}[5m])",
@@ -284,7 +284,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "cdpgtzzipr18gc"
+        "uid": "de3jmuqko7i80b"
       },
       "fieldConfig": {
         "defaults": {
@@ -365,7 +365,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "cdpgtzzipr18gc"
+            "uid": "de3jmuqko7i80b"
           },
           "editorMode": "code",
           "expr": "sum (rate(prometheus_http_request_duration_seconds_sum[5m])) / sum  (rate(prometheus_http_request_duration_seconds_count[5m]))",
@@ -378,7 +378,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "cdpgtzzipr18gc"
+            "uid": "de3jmuqko7i80b"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -397,7 +397,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "cdpgtzzipr18gc"
+        "uid": "de3jmuqko7i80b"
       },
       "fieldConfig": {
         "defaults": {
@@ -478,7 +478,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "cdpgtzzipr18gc"
+            "uid": "de3jmuqko7i80b"
           },
           "editorMode": "code",
           "expr": "rate(prometheus_http_request_duration_seconds_sum{handler=\"/metrics\"}[5m]) / rate(prometheus_http_request_duration_seconds_count{handler=\"/metrics\"}[5m])",
@@ -494,7 +494,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "cdpgtzzipr18gc"
+        "uid": "de3jmuqko7i80b"
       },
       "fieldConfig": {
         "defaults": {
@@ -601,7 +601,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "cdpgtzzipr18gc"
+            "uid": "de3jmuqko7i80b"
           },
           "disableTextWrap": false,
           "editorMode": "code",
@@ -620,7 +620,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "cdpgtzzipr18gc"
+            "uid": "de3jmuqko7i80b"
           },
           "disableTextWrap": false,
           "editorMode": "code",
@@ -639,7 +639,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "cdpgtzzipr18gc"
+            "uid": "de3jmuqko7i80b"
           },
           "disableTextWrap": false,
           "editorMode": "code",
@@ -658,7 +658,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "cdpgtzzipr18gc"
+            "uid": "de3jmuqko7i80b"
           },
           "disableTextWrap": false,
           "editorMode": "code",
@@ -694,7 +694,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "cdpgtzzipr18gc"
+        "uid": "de3jmuqko7i80b"
       },
       "description": "",
       "fieldConfig": {
@@ -749,7 +749,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "cdpgtzzipr18gc"
+            "uid": "de3jmuqko7i80b"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -767,7 +767,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "cdpgtzzipr18gc"
+        "uid": "de3jmuqko7i80b"
       },
       "description": "",
       "fieldConfig": {
@@ -850,7 +850,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "cdpgtzzipr18gc"
+            "uid": "de3jmuqko7i80b"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -868,7 +868,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "cdpgtzzipr18gc"
+        "uid": "de3jmuqko7i80b"
       },
       "description": "",
       "fieldConfig": {
@@ -949,7 +949,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "cdpgtzzipr18gc"
+            "uid": "de3jmuqko7i80b"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -968,7 +968,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "cdpgtzzipr18gc"
+        "uid": "de3jmuqko7i80b"
       },
       "fieldConfig": {
         "defaults": {
@@ -1048,7 +1048,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "cdpgtzzipr18gc"
+            "uid": "de3jmuqko7i80b"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -1077,7 +1077,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "cdpgtzzipr18gc"
+            "uid": "de3jmuqko7i80b"
           },
           "fieldConfig": {
             "defaults": {
@@ -1156,7 +1156,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "cdpgtzzipr18gc"
+                "uid": "de3jmuqko7i80b"
               },
               "disableTextWrap": false,
               "editorMode": "code",
@@ -1179,7 +1179,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "cdpgtzzipr18gc"
+            "uid": "de3jmuqko7i80b"
           },
           "fieldConfig": {
             "defaults": {
@@ -1258,7 +1258,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "cdpgtzzipr18gc"
+                "uid": "de3jmuqko7i80b"
               },
               "editorMode": "code",
               "exemplar": false,
@@ -1277,7 +1277,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "cdpgtzzipr18gc"
+            "uid": "de3jmuqko7i80b"
           },
           "fieldConfig": {
             "defaults": {
@@ -1356,7 +1356,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "cdpgtzzipr18gc"
+                "uid": "de3jmuqko7i80b"
               },
               "disableTextWrap": false,
               "editorMode": "code",
@@ -1375,7 +1375,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "cdpgtzzipr18gc"
+                "uid": "de3jmuqko7i80b"
               },
               "disableTextWrap": false,
               "editorMode": "code",
@@ -1398,7 +1398,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "cdpgtzzipr18gc"
+            "uid": "de3jmuqko7i80b"
           },
           "fieldConfig": {
             "defaults": {
@@ -1477,7 +1477,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "cdpgtzzipr18gc"
+                "uid": "de3jmuqko7i80b"
               },
               "disableTextWrap": false,
               "editorMode": "code",
@@ -1496,7 +1496,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "cdpgtzzipr18gc"
+                "uid": "de3jmuqko7i80b"
               },
               "disableTextWrap": false,
               "editorMode": "code",
@@ -1533,7 +1533,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "cdpgtzzipr18gc"
+            "uid": "de3jmuqko7i80b"
           },
           "fieldConfig": {
             "defaults": {
@@ -1615,7 +1615,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "cdpgtzzipr18gc"
+                "uid": "de3jmuqko7i80b"
               },
               "editorMode": "code",
               "expr": "process_resident_memory_bytes",

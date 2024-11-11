@@ -1,0 +1,75 @@
+{
+    "id": 2,
+    "type": "stat",
+    "title": "Uptime",
+    "gridPos": {
+      "x": 0,
+      "y": 0,
+      "h": 8,
+      "w": 12
+    },
+    "fieldConfig": {
+      "defaults": {
+        "mappings": [],
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "value": null,
+              "color": "green"
+            },
+            {
+              "value": 80,
+              "color": "red"
+            }
+          ]
+        },
+        "color": {
+          "mode": "thresholds"
+        },
+        "unit": "s"
+      },
+      "overrides": []
+    },
+    "pluginVersion": "11.3.0",
+    "targets": [
+      {
+        "refId": "B",
+        "expr": "process_uptime_seconds",
+        "range": true,
+        "instant": false,
+        "datasource": {
+          "uid": "de3jmuqko7i80b",
+          "type": "prometheus"
+        },
+        "hide": false,
+        "editorMode": "builder",
+        "legendFormat": "{{instance}}",
+        "useBackend": false,
+        "disableTextWrap": false,
+        "fullMetaSearch": false,
+        "includeNullMetadata": true
+      }
+    ],
+    "datasource": {
+      "uid": "de3jmuqko7i80b",
+      "type": "prometheus"
+    },
+    "options": {
+      "reduceOptions": {
+        "values": false,
+        "calcs": [
+          "lastNotNull"
+        ],
+        "fields": ""
+      },
+      "orientation": "auto",
+      "textMode": "auto",
+      "wideLayout": true,
+      "colorMode": "value",
+      "graphMode": "none",
+      "justifyMode": "center",
+      "showPercentChange": false,
+      "percentChangeColorMode": "standard"
+    }
+  }

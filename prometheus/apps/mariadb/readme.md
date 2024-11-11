@@ -10,6 +10,7 @@ grant process, replication client, select on *.* to 'exporter'@'localhost';
 exit
 
 cd /opt
+# Download mysql exporter from prometheus website
 tar -xvzf mysqld_exporter-0.16.0.linux-amd64.tar.gz
 
 cd mysqld_exporter-0.16.0.linux-amd64
@@ -21,6 +22,7 @@ echo "password=exporter">>.my.cnf
 ./mysqld_exporter & 
 ```
 # Update prometheus.yml
+```yaml
     - job_name: mysql # To get metrics about the mysql exporter’s targets
       static_configs:
         - targets:
@@ -34,6 +36,7 @@ echo "password=exporter">>.my.cnf
         - target_label: __address__
           # The mysqld_exporter host:port
           replacement: mariadb:9104
+```          
 # mysql prom QL
 mysql_version_info
 

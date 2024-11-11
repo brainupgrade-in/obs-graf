@@ -1,14 +1,17 @@
 # App Setup
+```bash
   kubectl create deploy taskmanager --image brainupgrade/prometheus-springboot-taskmanager
   kubectl expose deploy taskmanager --port 80 --target-port 8080
-
+```
 # Update prometheus.yaml with the target
+```yaml
       - job_name: 'taskmanager'
         metrics_path: '/actuator/prometheus'
         static_configs:
           - targets: ['taskmanager']
-
+```
 ## Prometheus config
+```yaml
     prometheus.yml: |
       global:
         scrape_interval: 15s
@@ -20,13 +23,15 @@
           metrics_path: '/actuator/prometheus'
           static_configs:
             - targets: ['taskmanager']       
-
+```
 # App Annotations
+```bash
 k set env deploy/taskmanager management.metrics.tags.application=taskmanager management.metrics.tags.service=taskmanager               
 
 k annotate svc/taskmanager prometheus.io/scrape="true" prometheus.io/port="8080" prometheus.io/path="/actuator/prometheus"
-
+```
 # Load generator
+```bash
     kubectl create deploy test --image brainupgrade/tshoot
 
     kubectl exec -it deploy/test -- bash
@@ -42,27 +47,18 @@ k annotate svc/taskmanager prometheus.io/scrape="true" prometheus.io/port="8080"
     for i in {1..1};do curl -X POST -H "Content-Type: application/json" -d "{\"title\":\"Task $i\"}" https://mtvlabk8s-taskmanager.brainupgrade.in/api/todos ; done
 
     for i in {1..1};do curl -X GET https://mtvlabk8s-taskmanager.brainupgrade.in/api/test/slow?delay=10 ; done
-
-# Request latency distribution
+```
+# Prom QLs
+## Request latency distribution
 histogram_quantile(0.5,sum by (le) (rate(slow_request_seconds_bucket{job="taskmanager",uri="/api/test/slow"}[5m])))
 
-# Overall request distribution
+## Overall request distribution
 
 sum by (le) (http_server_requests_seconds_bucket{job="taskmanager"})
 
-# Rate of status including errors
+## Rate of status including errors
 sum by (status) (rate(http_server_requests_seconds_count[5m]))
 
-# For auto discovery using service annotation
-kubectl annotate svc taskmanager prometheus.io/scrape="true" prometheus.io/port="8080" prometheus.io/path="/actuator/prometheus"
-
-# Set prometheus metrics tags
-k set env deploy taskmanager management.metrics.tags.application=taskmanager management.metrics.tags.service=taskmanager
-
-# Grafana Dashboard 
-12685 - Kancy Spring Boot 
-
-# More  PromQL
 ## 50th Percentile (Median) of HTTP Request Durations:
 
 histogram_quantile(0.5, sum(rate(http_server_requests_seconds_bucket{job="taskmanager"}[5m])) by (le))
@@ -85,3 +81,12 @@ sum(rate(http_server_requests_seconds_bucket{job="taskmanager", le="0.2"}[5m]))
 /
 sum(rate(http_server_requests_seconds_count{job="taskmanager"}[5m])) * 100
 
+# Grafana Dashboard 
+12685 - Kancy Spring Boot 
+
+# Misc
+# For auto discovery using service annotation
+kubectl annotate svc taskmanager prometheus.io/scrape="true" prometheus.io/port="8080" prometheus.io/path="/actuator/prometheus"
+
+# Set prometheus metrics tags
+k set env deploy taskmanager management.metrics.tags.application=taskmanager management.metrics.tags.service=taskmanager

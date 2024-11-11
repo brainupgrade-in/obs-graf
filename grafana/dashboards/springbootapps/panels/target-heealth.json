@@ -1,0 +1,88 @@
+{
+    "id": 1,
+    "type": "stat",
+    "title": "Target Health",
+    "gridPos": {
+      "x": 12,
+      "y": 0,
+      "h": 8,
+      "w": 12
+    },
+    "fieldConfig": {
+      "defaults": {
+        "mappings": [
+          {
+            "options": {
+              "0": {
+                "color": "red",
+                "index": 1,
+                "text": "DOWN"
+              },
+              "1": {
+                "color": "green",
+                "index": 0,
+                "text": "UP"
+              }
+            },
+            "type": "value"
+          }
+        ],
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": null
+            }
+          ]
+        },
+        "color": {
+          "mode": "fixed"
+        }
+      },
+      "overrides": []
+    },
+    "pluginVersion": "11.3.0",
+    "targets": [
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "de3jmuqko7i80b"
+        },
+        "disableTextWrap": false,
+        "editorMode": "builder",
+        "exemplar": false,
+        "expr": "up",
+        "format": "heatmap",
+        "fullMetaSearch": false,
+        "includeNullMetadata": true,
+        "instant": true,
+        "legendFormat": "{{job}}",
+        "range": false,
+        "refId": "A",
+        "useBackend": false
+      }
+    ],
+    "datasource": {
+      "type": "prometheus",
+      "uid": "de3jmuqko7i80b"
+    },
+    "options": {
+      "reduceOptions": {
+        "values": false,
+        "calcs": [
+          "lastNotNull"
+        ],
+        "fields": ""
+      },
+      "orientation": "auto",
+      "textMode": "auto",
+      "wideLayout": true,
+      "colorMode": "value",
+      "graphMode": "area",
+      "justifyMode": "center",
+      "showPercentChange": false,
+      "percentChangeColorMode": "standard",
+      "text": {}
+    }
+  }

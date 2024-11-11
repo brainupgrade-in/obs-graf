@@ -12,10 +12,14 @@ kubectl expose deploy app --port 80 --target-port 8080
 ```
 # Load generator
 ```bash
+
 kubectl create deploy test --image brainupgrade/tshoot
 kubectl exec -it deploy/test -- bash
 for i in {1..30};do curl -s app/;done
 curl -s app/visits
+
+while true; do curl app;sleep $(($RANDOM%10));done
+
 ```
 
 # Successful Visits - Total
