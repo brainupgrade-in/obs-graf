@@ -8,7 +8,6 @@ tar -xvzf node_exporter-1.8.2.linux-amd64.tar.gz
 
 # Update prometheus.yaml
 ```yaml
-      scrape_configs:
         - job_name: 'node-exporter'
           static_configs:
             - targets: ['ubuntu-obs:9100'] 
