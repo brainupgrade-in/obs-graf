@@ -4,8 +4,8 @@ kubectl apply -f https://raw.githubusercontent.com/brainupgrade-in/obs-graf/refs
 kubectl exec -it deploy/mariadb -- bash
 
 mysql -u root -p 
-create user 'exporter'@'localhost' identified by 'exporter' with max_user_connections 3;
-grant process, replication client, select on *.* to 'exporter'@'localhost';
+create user 'exporter'@'%' identified by 'exporter' with max_user_connections 3;
+grant process, replication client, select on *.* to 'exporter'@'%';
 
 exit
 
@@ -19,7 +19,7 @@ echo "[client]">>.my.cnf
 echo "user=exporter">>.my.cnf
 echo "password=exporter">>.my.cnf
 
-./mysqld_exporter & 
+./mysqld_exporter --collect.auto_increment.columns & 
 ```
 # Update prometheus.yml
 ```yaml
@@ -27,7 +27,7 @@ echo "password=exporter">>.my.cnf
       static_configs:
         - targets:
           - mariadb:3306
-          - unix:///run/mysqld/mysqld.sock
+          # - unix:///run/mysqld/mysqld.sock
       relabel_configs:
         - source_labels: [__address__]
           target_label: __param_target
@@ -42,3 +42,4 @@ mysql_version_info
 
 # Grafana Dashboard
 14057
+7362

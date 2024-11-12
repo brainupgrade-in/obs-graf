@@ -1,5 +1,6 @@
-# Ingress setup
+# Launch weather app
+kubectl apply -f https://raw.githubusercontent.com/brainupgrade-in/obs-graf/refs/heads/main/prometheus/apps/weather/weather.yaml
 
-kubectl create ingress -n weather  mtvlabk8s-weather.brainupgrade.in --rule="mtvlabk8s-weather.brainupgrade.in/?(.*)=weather-front:80,tls=weahr8sec" --class nginx --annotation=cert-manager.io/cluster-issuer=letsencrypt-prod
+# Ingress Update
 
-kubectl annotate ingress mtvlabk8s-weather.brainupgrade.in  -n weather   nginx.ingress.kubernetes.io/rewrite-target="/\$1"  nginx.ingress.kubernetes.io/use-regex="true"
+kubectl patch ingress <user>-app.brainupgrade.in --type=json  -p='[{"op":"replace","path":"/spec/rules/0/http/paths/0/backend/service/name","value":"weather-front"}]'

@@ -15,7 +15,8 @@ kubectl expose deploy app --port 80 --target-port 8080
 
 kubectl create deploy test --image brainupgrade/tshoot
 kubectl exec -it deploy/test -- bash
-for i in {1..30};do curl -s app/;done
+for i in {1..30};do curl -s app/;sleep 2s;done
+for i in {1..30};do curl -s app/hello;sleep 2s;done
 curl -s app/visits
 
 while true; do curl app;sleep $(($RANDOM%10));done
@@ -35,3 +36,11 @@ visit_counter_total
 
 # Visits / second 
 rate(visit_counter_total[5m])
+
+## Error Rate / second
+rate(http_server_requests_seconds_count{application="$application",instance="$instance",status!~"200"}[$__rate_interval])
+
+## Homepage visits per second
+rate(visit_counter_total[$__rate_interval])
+## Request Per URI
+http_server_requests_seconds_count{application="$application",instance="$instance"}

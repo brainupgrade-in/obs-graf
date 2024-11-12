@@ -46,11 +46,11 @@ spec:
         name: mariadb
         resources: 
           limits:
-            cpu: 50m
-            memory: 128Mi
+            cpu: 250m
+            memory: 1024Mi
           requests:
-            cpu: 50m
-            memory: 128Mi         
+            cpu: 100m
+            memory: 512Mi         
         ports:
         - containerPort: 3306
           name: mariadb
@@ -116,6 +116,13 @@ spec:
         - image: brainupgrade/weather-services:openmeteo-v3
           imagePullPolicy: Always
           name: weather-services
+          resources:
+            limits:
+              cpu: 100m
+              memory: 1024Mi
+            requests:
+              cpu: 50m
+              memory: 512Mi
           env:
             - name: MY_NAMESPACE
               valueFrom:
@@ -162,6 +169,13 @@ spec:
         - image: brainupgrade/weather:openmeteo-v2
           imagePullPolicy: Always
           name: weather-front
+          resources:
+            limits:
+              cpu: 100m
+              memory: 1024Mi
+            requests:
+              cpu: 50m
+              memory: 512Mi
           env:
             - name: MY_NAMESPACE
               valueFrom:
