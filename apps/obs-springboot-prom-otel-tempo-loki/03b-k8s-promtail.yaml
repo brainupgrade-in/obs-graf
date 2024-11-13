@@ -14,7 +14,7 @@ spec:
     spec:
       affinity:
         podAffinity:
-          requiredDuringSchedulingRequiredDuringExecution:
+          requiredDuringSchedulingIgnoredDuringExecution:
             - labelSelector:
                 matchLabels:
                   app: obs-springboot
