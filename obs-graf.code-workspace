@@ -15,5 +15,8 @@
 		{
 			"path": "../../../workspace/k8s-unigps"
 		}
-	]
+	],
+	"settings": {
+		"java.compile.nullAnalysis.mode": "disabled"
+	}
 }

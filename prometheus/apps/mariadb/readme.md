@@ -23,10 +23,9 @@ echo "password=exporter">>.my.cnf
 ```
 # Update prometheus.yml
 ```yaml
-    - job_name: mysql # To get metrics about the mysql exporter’s targets
+    - job_name: "mysql" # To get metrics about the mysql exporter’s targets
       static_configs:
-        - targets:
-          - mariadb:3306
+        - targets: ["mariadb:3306"]
           # - unix:///run/mysqld/mysqld.sock
       relabel_configs:
         - source_labels: [__address__]
