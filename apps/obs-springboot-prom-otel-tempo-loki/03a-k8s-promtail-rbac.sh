@@ -11,17 +11,17 @@ metadata:
   namespace: ${namespace}
 subjects:
 - kind: ServiceAccount
-  name: promtail-${namespace}
+  name: promtail
   namespace: ${namespace}
 roleRef:
   kind: ClusterRole
-  name: promtail-mtvlabk8s
+  name: promtail
   apiGroup: rbac.authorization.k8s.io
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: promtail-mtvlabk8s
+  name: promtail
 rules:
 rules:
 - apiGroups:
@@ -40,6 +40,6 @@ rules:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: promtail-${namespace}
+  name: promtail
   namespace: ${namespace}
 EOF
