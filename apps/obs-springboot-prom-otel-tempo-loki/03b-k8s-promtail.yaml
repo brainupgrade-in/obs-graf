@@ -1,8 +1,9 @@
 apiVersion: apps/v1
-kind: DaemonSet
+kind: Deployment
 metadata:
   name: promtail
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: promtail
@@ -11,6 +12,16 @@ spec:
       labels:
         app: promtail
     spec:
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingRequiredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app: obs-springboot
+              namespaceSelector:
+                matchNames:
+                  - "${POD_NAMESPACE}"
+              topologyKey: "kubernetes.io/hostname"    
       serviceAccountName: promtail
       initContainers:
         - name: init-promtail-config
@@ -36,6 +47,13 @@ spec:
           image: docker.io/grafana/promtail:3.0.0
           args:
             - -config.file=/etc/promtail/promtail-config.yaml
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "50m"
+            limits:
+              memory: "128Mi"
+              cpu: "100m"
           env:
             - name: 'NAMESPACE'
               valueFrom:
