@@ -141,6 +141,13 @@ while true; do ./test.sh obs-springboot ;sleep 5s;done
 
 # Misc
 ## Tmux commands
+```
 Window split: ctrl+b "
 Mouse option: ctrl+b :mouse on
-
+```
+# Grafana Dashboards
+```
+17175 - Springboot App
+763 - redis
+9628 - postgres
+```
