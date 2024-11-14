@@ -7,7 +7,7 @@ kubectl apply -f https://raw.githubusercontent.com/brainupgrade-in/obs-graf/refs
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/brainupgrade-in/obs-graf/refs/heads/main/apps/obs-springboot-prom-otel-tempo-loki/02-k8s-tempo.yaml
 ```
-## Protail - to ship spring boot app logs to Loki 
+## Promtail - to ship spring boot app logs to Loki 
 ### RBAC for promtail must (admin)
 ```bash
 wget https://raw.githubusercontent.com/brainupgrade-in/obs-graf/refs/heads/main/apps/obs-springboot-prom-otel-tempo-loki/03a-k8s-promtail-rbac.sh
@@ -15,7 +15,11 @@ wget https://raw.githubusercontent.com/brainupgrade-in/obs-graf/refs/heads/main/
 ```
 ### Promtail setup
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/brainupgrade-in/obs-graf/refs/heads/main/apps/obs-springboot-prom-otel-tempo-loki/03b-k8s-promtail.yaml
+wget https://raw.githubusercontent.com/brainupgrade-in/obs-graf/refs/heads/main/apps/obs-springboot-prom-otel-tempo-loki/03b-k8s-promtail.yaml
+
+sed -i 's/\${POD_NAMESPACE}/<user>/g' 03b-k8s-promtail.yaml
+
+kubectl apply -f 03b-k8s-promtail.yaml
 ```
 ## Prometheus setup
 ### Prometheus RBAC (admin)
@@ -32,7 +36,7 @@ kubectl apply -f https://raw.githubusercontent.com/brainupgrade-in/obs-graf/refs
 ```
 Update __NAMESPACE__ to <user> in prometheus config
 ```bash
-kubectl edit cm promemtheus-config
+kubectl edit cm prometheus-config
 ```
 Assign sa to prometheus pods
 ```bash
@@ -91,30 +95,8 @@ Label: trace_id
 
     Link Label: Error Rate  Query: sum by (client, server)(rate(traces_service_graph_request_failed_total{$__tags}{$__rate_interval))
 
-# Grafana
-17175 - Springboot Observability
 
-# Load Test
-```bash
-    kubectl create deploy loadtest --image brainupgrade/load-test
-    kubectl exec -it deploy/loadtest -- bash
-```
-Run tmux and split the window in two halves (ctrl+b ")
-
-## First tmux window pane
-```bash
-wget https://raw.githubusercontent.com/brainupgrade-in/obs-graf/refs/heads/main/apps/obs-springboot-prom-otel-tempo-loki/test-load.sh
-
-./test-load.sh obs-springboot.<user> 10
-```
-## Second tmux window pane
-```bash
-wget https://raw.githubusercontent.com/brainupgrade-in/obs-graf/refs/heads/main/apps/obs-springboot-prom-otel-tempo-loki/test.sh
-
-while true; do ./test.sh obs-springboot.<user> ;sleep 5s;done
-```
-
-# Dashboard 
+# Dashboard - 17175
 ## Dashboard Variables
 ```
 Application: app label_values(service)
@@ -132,6 +114,30 @@ sum by(type) (rate({app=~"$app.*"} | pattern `<date> <time> <_>=<trace_id> <_>=<
 ### Logs of all spring boot panels - Query
 
 {app=~"$app.*"} | pattern `<date> <time> <_>=<trace_id> <_>=<span_id> <_>=<trace_flags> <type> <_> --- <msg>` | line_format "{{.app}}\t{{.type}}\ttrace_id={{.trace_id}}\t{{.msg}}" |= "$log_keyword"
+
+# Load Test
+```bash
+    kubectl create deploy loadtest --image brainupgrade/load-test
+    kubectl exec -it deploy/loadtest -- bash
+```
+Run tmux and split the window in two halves (ctrl+b ")
+
+## First tmux window pane
+```bash
+curl -fsslO https://raw.githubusercontent.com/brainupgrade-in/obs-graf/refs/heads/main/apps/obs-springboot-prom-otel-tempo-loki/test-load.sh
+
+chmod +x test-load.sh
+
+./test-load.sh obs-springboot 10
+```
+## Second tmux window pane
+```bash
+curl -fsslO https://raw.githubusercontent.com/brainupgrade-in/obs-graf/refs/heads/main/apps/obs-springboot-prom-otel-tempo-loki/test.sh
+
+chmod +x test.sh
+
+while true; do ./test.sh obs-springboot ;sleep 5s;done
+```
 
 # Misc
 ## Tmux commands
