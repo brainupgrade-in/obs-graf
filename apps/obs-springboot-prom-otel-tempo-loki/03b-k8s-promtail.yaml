@@ -18,9 +18,8 @@ spec:
             - labelSelector:
                 matchLabels:
                   app: obs-springboot
-              namespaceSelector:
-                matchNames:
-                  - "${POD_NAMESPACE}"
+              namespaces:
+                - "${POD_NAMESPACE}"
               topologyKey: "kubernetes.io/hostname"    
       serviceAccountName: promtail
       initContainers:

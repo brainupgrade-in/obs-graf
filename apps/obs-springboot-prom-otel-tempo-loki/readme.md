@@ -1,32 +1,87 @@
-# Loki - Tempo
-Derived Fields
+# Observability setup for spring boot app with OTEL instrumentation
+## Loki - logs database
+```bash
+kubectl apply -f https://raw.githubusercontent.com/brainupgrade-in/obs-graf/refs/heads/main/apps/obs-springboot-prom-otel-tempo-loki/01-k8s-loki.yaml
+```
+## Tempo - Distributed log tracing using trace_id
+```bash
+kubectl apply -f https://raw.githubusercontent.com/brainupgrade-in/obs-graf/refs/heads/main/apps/obs-springboot-prom-otel-tempo-loki/02-k8s-tempo.yaml
+```
+## Protail - to ship spring boot app logs to Loki 
+### RBAC for promtail must (admin)
+```bash
+wget https://raw.githubusercontent.com/brainupgrade-in/obs-graf/refs/heads/main/apps/obs-springboot-prom-otel-tempo-loki/03a-k8s-promtail-rbac.sh
+./03a-k8s-promtail-rbac.sh <user|namespace>
+```
+### Promtail setup
+```bash
+kubectl apply -f https://raw.githubusercontent.com/brainupgrade-in/obs-graf/refs/heads/main/apps/obs-springboot-prom-otel-tempo-loki/03b-k8s-promtail.yaml
+```
+## Prometheus setup
+### Prometheus RBAC (admin)
+```bash
+wget https://raw.githubusercontent.com/brainupgrade-in/obs-graf/refs/heads/main/apps/obs-springboot-prom-otel-tempo-loki/04-k8s-prometheus-rbac.sh
+
+./04-k8s-prometheus-rbac.sh <user|namespace>
+```
+### Prometheus Config - To auto discover kubernetes services with annotation
+Ensure that RBAC for prometheus is setup
+```bash
+kubectl apply -f https://raw.githubusercontent.com/brainupgrade-in/obs-graf/refs/heads/main/prometheus/k8s-discovery/01b-k8s-prometheus-configmap-svc-annotation.yaml
+
+```
+Update __NAMESPACE__ to <user> in prometheus config
+```bash
+kubectl edit cm promemtheus-config
+```
+Assign sa to prometheus pods
+```bash
+kubectl set sa sts/prometheus prometheus
+```
+
+## Deploy spring boot app
+```bash
+kubectl apply -f https://raw.githubusercontent.com/brainupgrade-in/obs-graf/refs/heads/main/apps/obs-springboot-prom-otel-tempo-loki/05-k8s-obs-springboot-prom-otel.yaml
+```
+
+## Troubleshooting
+If prometheus does not collect spring boot metrics then restart
+```bash
+kubectl rollout restart sts/prometheus
+```
+
+# UI Config
+## Loki Config
+### Enable Tempo -Derived Fields
+```
     Name: TraceId Regex: (?:trace_id)=(\w+) 
     
     
     Query: # ${__value.raw}
-
-OR (?:trace_id)=(\w+).*?(?:traceID)=(\w+)
-    
-
+```
+OR 
+```
+(?:trace_id)=(\w+).*?(?:traceID)=(\w+)
+```
 Internal Link: Tempo
 
-# Prometheus
+## Prometheus UI Config
 Exemplars
 
 Internal link Tempo
 URL: ${__value.raw}
 Label: trace_id
 
-# Tempo config
+## Tempo UI config
 
-## Trace to Logs
+### Trace to Logs
     Datasource: Loki
     Span start: -5m
     Span End: 5m
     Tags: pod
-    Filter by tracke ID: true
+    Filter by trace ID: true
 
-## Trace to Metrics
+### Trace to Metrics
     Data Source: Prometheus
     Span start: -5m
     Span end: 5m
@@ -39,49 +94,47 @@ Label: trace_id
 # Grafana
 17175 - Springboot Observability
 
-
 # Load Test
-    kubectl create deploy loadtest --image jstarcher/siege -- "tail" "-f" "/dev/null"
-    kubectl exec -it deploy/loadtest -- sh
-    apk update && apk add bash git tmux curl
+```bash
+    kubectl create deploy loadtest --image brainupgrade/load-test
+    kubectl exec -it deploy/loadtest -- bash
+```
+Run tmux and split the window in two halves (ctrl+b ")
 
--- split the window in two halves (ctrl+b ")
+## First tmux window pane
+```bash
+wget https://raw.githubusercontent.com/brainupgrade-in/obs-graf/refs/heads/main/apps/obs-springboot-prom-otel-tempo-loki/test-load.sh
 
--- first half
+./test-load.sh obs-springboot.<user> 10
+```
+## Second tmux window pane
+```bash
+wget https://raw.githubusercontent.com/brainupgrade-in/obs-graf/refs/heads/main/apps/obs-springboot-prom-otel-tempo-loki/test.sh
 
-    git clone https://github.com/brainupgrade-in/obs-graf
-    cd obs-graf/apps/obs-springboot-prom-otel-tempo-loki
-    ./test-load.sh obs-springboot.<user> 10
+while true; do ./test.sh obs-springboot.<user> ;sleep 5s;done
+```
 
--- second half
+# Dashboard 
+## Dashboard Variables
+```
+Application: app label_values(service)
 
-    cd obs-graf/apps/obs-springboot-prom-otel-tempo-loki
-    while true; do ./test.sh obs-springboot.<user> ;sleep 5s;done
+Instance: app_name label_values(application)
 
-# Dashboard Variables
-app_name lable_values(application)
+Log Query: LogRef: log_keyword
+```
+## Panels changes
 
-LogRef:
-
-log_keyword
-
-app label_values(application)
-
-# Dashboard panels
-
-Log type rate:
+### Log type rate - Query
 
 sum by(type) (rate({app=~"$app.*"} | pattern `<date> <time> <_>=<trace_id> <_>=<span_id> <_>=<trace_flags> <type> <_> --- <msg>` | type != "" |= "$log_keyword" [1m]))
 
-Logs of all spring boot panels:
+### Logs of all spring boot panels - Query
 
 {app=~"$app.*"} | pattern `<date> <time> <_>=<trace_id> <_>=<span_id> <_>=<trace_flags> <type> <_> --- <msg>` | line_format "{{.app}}\t{{.type}}\ttrace_id={{.trace_id}}\t{{.msg}}" |= "$log_keyword"
 
-# Tmux commands
+# Misc
+## Tmux commands
 Window split: ctrl+b "
 Mouse option: ctrl+b :mouse on
 
-
-# Misc - Promtail
-
-helm upgrade --install promtail  grafana/promtail -f promtail-helm-values.yaml

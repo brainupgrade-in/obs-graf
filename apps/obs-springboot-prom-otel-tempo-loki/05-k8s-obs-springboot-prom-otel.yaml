@@ -15,7 +15,8 @@ spec:
         app: obs-springboot
     spec:
       containers:
-      - image: ghcr.io/blueswen/spring-boot-observability/app:latest
+      - image: brainupgrade/observability-springboot:latest
+      # - image: ghcr.io/blueswen/spring-boot-observability/app:latest
         name: obs-springboot
         resources:
           limits:

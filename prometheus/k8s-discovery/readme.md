@@ -17,3 +17,6 @@ helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx \
 
 ServiceMonitor (custom k8s )
 release: prometheus   (k8s services)
+
+# Admin
+for i in {1..23};do kubectl label ns mtvlabeksu$i pod-security.kubernetes.io/enforce-  ; done
