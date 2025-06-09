@@ -1,7 +1,7 @@
 # Kubernetes Cluster monitoring  using prometheus
 
-helm upgrade prometheus prometheus-community/kube-prometheus-stack \
---namespace monitoring  \
+helm upgrade --install prometheus prometheus-community/kube-prometheus-stack \
+--namespace observability --create-namespace  \
 --set prometheus.prometheusSpec.podMonitorSelectorNilUsesHelmValues=false \
 --set prometheus.prometheusSpec.serviceMonitorSelectorNilUsesHelmValues=false
 
@@ -12,11 +12,11 @@ helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx \
 --set controller.metrics.serviceMonitor.additionalLabels.release="prometheus"    
 
 
-
-
-
 ServiceMonitor (custom k8s )
 release: prometheus   (k8s services)
+
+
+
 
 # Admin
 for i in {1..23};do kubectl label ns mtvlabeksu$i pod-security.kubernetes.io/enforce-  ; done

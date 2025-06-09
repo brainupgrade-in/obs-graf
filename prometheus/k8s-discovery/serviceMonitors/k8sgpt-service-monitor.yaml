@@ -1,0 +1,31 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  annotations:
+    meta.helm.sh/release-name: release
+    meta.helm.sh/release-namespace: k8sgpt-operator-system
+  labels:
+    app.kubernetes.io/component: metrics
+    app.kubernetes.io/created-by: k8sgpt-operator
+    app.kubernetes.io/instance: release
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: k8sgpt-operator
+    app.kubernetes.io/part-of: k8sgpt-operator
+    app.kubernetes.io/version: 0.0.26
+    control-plane: controller-manager
+    helm.sh/chart: k8sgpt-operator-0.2.6
+  name: release-k8sgpt-operator-controller-manager-metrics-monitor
+spec:
+  endpoints:
+  - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+    path: /metrics
+    port: https
+    scheme: https
+    tlsConfig:
+      insecureSkipVerify: true
+  namespaceSelector:
+    matchNames:
+    - k8sgpt-operator-system      
+  selector:
+    matchLabels:
+      control-plane: controller-manager

@@ -14,6 +14,17 @@
 		},
 		{
 			"path": "../../../workspace/k8s-unigps"
+		},
+		{
+			"name": "k8sdeepseek",
+			"path": "../k8sdeepseek"
+		},
+		{
+			"path": "../kubernetes"
+		},
+		{
+			"name": "gheware-ai",
+			"path": "../gheware-ai"
 		}
 	],
 	"settings": {
