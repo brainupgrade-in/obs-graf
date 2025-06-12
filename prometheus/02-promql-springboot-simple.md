@@ -44,3 +44,6 @@ rate(http_server_requests_seconds_count{application="$application",instance="$in
 rate(visit_counter_total[$__rate_interval])
 ## Request Per URI
 http_server_requests_seconds_count{application="$application",instance="$instance"}
+
+# Configure service with annotation - Admin
+kubectl apply -f https://raw.githubusercontent.com/brainupgrade-in/obs-graf/refs/heads/main/prometheus/k8s-discovery/02-simpleapp-prometheus-service.yaml

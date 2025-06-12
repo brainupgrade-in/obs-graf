@@ -17,6 +17,7 @@ wget https://raw.githubusercontent.com/brainupgrade-in/obs-graf/refs/heads/main/
 ```bash
 wget https://raw.githubusercontent.com/brainupgrade-in/obs-graf/refs/heads/main/apps/obs-springboot-prom-otel-tempo-loki/03b-k8s-promtail.yaml
 
+sed -i 's/default/<user>/g' 03b-k8s-promtail.yaml
 sed -i 's/\${POD_NAMESPACE}/<user>/g' 03b-k8s-promtail.yaml
 
 kubectl apply -f 03b-k8s-promtail.yaml
@@ -93,7 +94,8 @@ Label: trace_id
 
     Link Label: Request Rate  Query: sum by(uri)(rate(http_server_requests_seconds_count{$__tags}[1m]))
 
-    Link Label: Error Rate  Query: sum by (client, server)(rate(traces_service_graph_request_failed_total{$__tags}{$__rate_interval))
+    Link Label: Error Rate  Query: 
+    rate(http_server_requests_seconds_count{status="500"}[$__rate_interval])
 
 
 # Dashboard - 17175

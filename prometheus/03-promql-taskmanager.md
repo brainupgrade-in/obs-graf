@@ -90,3 +90,6 @@ kubectl annotate svc taskmanager prometheus.io/scrape="true" prometheus.io/port=
 
 # Set prometheus metrics tags
 k set env deploy taskmanager management.metrics.tags.application=taskmanager management.metrics.tags.service=taskmanager
+
+# via service discovery configuration
+kubectl apply -f https://raw.githubusercontent.com/brainupgrade-in/obs-graf/refs/heads/main/prometheus/k8s-discovery/03-taskmanager-prometheus-service.yaml

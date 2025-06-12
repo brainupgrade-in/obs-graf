@@ -35,3 +35,4 @@ Estimate (predict) how much free memory will be available 2 hours into the futur
 ## Avg system cpu
 average percentage of CPU time spent in 'system' mode per instance, over the last 1 minute.
 ```(avg by (instance) (irate (node_cpu_seconds_total{mode="system"}[1m]))*100)```
+
