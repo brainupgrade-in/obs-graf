@@ -4,3 +4,5 @@
 - 12836 Spring Boot Statistics 2.3(jetty) 
 - 14314 Kubernetes Nginx Ingress Prometheus NextGen
 - 9964 Jenkins
+- 14057 Mariadb
+- 7362 Mariadb

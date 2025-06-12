@@ -42,3 +42,6 @@ mysql_version_info
 # Grafana Dashboard
 14057
 7362
+
+# k8s auto discovery
+kubectl apply -f https://raw.githubusercontent.com/brainupgrade-in/obs-graf/refs/heads/main/prometheus/k8s-discovery/08-mariadb-exporter-prometheus-service.yaml

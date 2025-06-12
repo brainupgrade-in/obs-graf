@@ -8,4 +8,4 @@ kubectl set env deploy/observability-springboot-rabbitmq management.metrics.tags
 ```
 
 # k8s auto discovery config
-kubectl apply -f https://raw.githubusercontent.com/brainupgrade-in/obs-graf/refs/heads/main/prometheus/k8s-discovery/rabbitmq-prometheus-service.yaml
+kubectl apply -f https://raw.githubusercontent.com/brainupgrade-in/obs-graf/refs/heads/main/prometheus/k8s-discovery/05-observability-springboot-rabbitmq-prometheus-service.yaml
