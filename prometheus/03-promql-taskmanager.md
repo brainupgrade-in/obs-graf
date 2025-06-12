@@ -36,7 +36,7 @@ k annotate svc/taskmanager prometheus.io/scrape="true" prometheus.io/port="8080"
 
     kubectl exec -it deploy/test -- bash
     
-    for i in {1..30};do curl -s taskmanager/api/test/slow?delay=10;done
+    for i in {1..30};do echo -e "\nLoad test request $i Waiting for response" ;curl -s taskmanager/api/test/slow?delay=10;done
 
     for i in {1..1};do curl -X POST -H "Content-Type: application/json" -d "{\"title\":\"Task $i\"}" taskmanager/api/todos ; done
 
@@ -49,8 +49,8 @@ k annotate svc/taskmanager prometheus.io/scrape="true" prometheus.io/port="8080"
     for i in {1..1};do curl -X GET https://mtvlabk8s-taskmanager.brainupgrade.in/api/test/slow?delay=10 ; done
 ```
 # Prom QLs
-## Request latency distribution
-histogram_quantile(0.5,sum by (le) (rate(slow_request_seconds_bucket{job="taskmanager",uri="/api/test/slow"}[5m])))
+## Request latency distribution - P90
+histogram_quantile(0.9, sum by (le) (rate(slow_request_seconds_bucket[60m])))
 
 ## Overall request distribution
 
@@ -70,7 +70,7 @@ histogram_quantile(0.95, sum(rate(http_server_requests_seconds_bucket{job="taskm
 histogram_quantile(0.99, sum(rate(http_server_requests_seconds_bucket{job="taskmanager"}[5m])) by (le)) > 0.4
 
 ## Total Number of Requests in the Last Hour:
-increase(http_server_requests_seconds_count{job="taskmanager"}[15m])
+increase(http_server_requests_seconds_count{job="taskmanager"}[60m])
 
 ## Requests per Second (RPS) Rate:
 rate(http_server_requests_seconds_count{job="taskmanager"}[5m])

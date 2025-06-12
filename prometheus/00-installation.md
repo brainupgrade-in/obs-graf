@@ -14,8 +14,8 @@ kubectl patch ingress <user>-prom.brainupgrade.in --type=json  -p='[{"op":"repla
 tmux
 kubectl exec -it deploy/ubuntu-obs -- bash
 cd /opt
-tar -xvzf prometheus-2.55.1.linux-amd64.tar.gz 
-cd prometheus-2.55.1.linux-amd64
+tar -xvzf prometheus-3.4.1.linux-amd64.tar.gz
+cd prometheus-3.4.1.linux-amd64
 ./prometheus
 ```
 

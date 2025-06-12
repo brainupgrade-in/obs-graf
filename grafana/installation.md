@@ -16,9 +16,9 @@ tmux
 kubectl exec -it deploy/ubuntu-obs -- bash
 
 # apt-get install -y adduser libfontconfig1 musl
-tar -xvzf grafana-enterprise-11.3.0.linux-amd64.tar.gz
+tar -xvzf grafana-enterprise-12.0.1.linux-amd64.tar.gz
 
-cd grafana-v11.3.0
+cd grafana-v12.0.1
 
 ./bin/grafana server
 
