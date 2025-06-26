@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# for i in {1..1};do ./04-k8s-prometheus-rbac.sh  mtvlabk8su$i ; done
+# for i in {1..30};do ./04-k8s-prometheus-rbac.sh  mtvlabeksu$i ; done
 namespace=$1
 
 cat <<EOF | kubectl apply -f -

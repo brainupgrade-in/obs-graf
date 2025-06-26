@@ -36,3 +36,5 @@ Estimate (predict) how much free memory will be available 2 hours into the futur
 average percentage of CPU time spent in 'system' mode per instance, over the last 1 minute.
 ```(avg by (instance) (irate (node_cpu_seconds_total{mode="system"}[1m]))*100)```
 
+# via service discovery configuration
+kubectl apply -f https://raw.githubusercontent.com/brainupgrade-in/obs-graf/refs/heads/main/prometheus/k8s-discovery/10-node-exporter-prometheus-service.yaml
