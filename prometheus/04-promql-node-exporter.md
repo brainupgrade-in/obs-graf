@@ -1,6 +1,12 @@
 # Install node exporter
 
 ```bash
+tmux 
+
+kubectl apply -f https://raw.githubusercontent.com/brainupgrade-in/obs-graf/refs/heads/main/prometheus/apps/ubuntu/ubuntu-obs.yaml
+
+kubectl exec -it deploy/ubuntu-obs -- bash
+
 cd /opt
 tar -xvzf node_exporter-1.9.1.linux-amd64.tar.gz 
 ./node-exporter
